@@ -46,8 +46,12 @@ print(e)
 final_text2 = final_text + ' ' + e
 print(final_text2)
 
+# Also need to replace capital letter for 'this':
+final_text3 = final_text2.replace("  this", "  This")
+print(final_text3)
+
 # We can use unicode symbol of whitespace to find all of them in the text.
-testcount = (re.findall('\u0020', final_text2))
+testcount = (re.findall('\s', final_text2))
 
 # Now we calculate them using 'len'
 testcount1 = len(testcount)
