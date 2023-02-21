@@ -57,13 +57,26 @@ print(list_dicts[0].keys())
 print(list_dicts[0].values())
 
 masterdict = {}
-for dict1 in list_dicts:
-    for el in dict1.keys():
-        masterdict[el] = dict1[el]
+lista = []
+for index1 in range(len(list_dicts)):
+    for el in list_dicts[index1]:
+        if el not in lista:
+            #continue
+        #else:
+            dict3 = {}
+            for el2 in range(len(list_dicts)):
+                if el in list_dicts[el2]:
+                    dict3[el2] = list_dicts[el2][el]
+            lista.append(el)
+            if len(dict3) == 1:
+                masterdict[el] = list_dicts[index1][el]
+            else:
+                x = max(dict3.values())
+                y = 0
+                #print(x)
+                for el3 in dict3.items():
+                    if el3[1] == x:
+                        y = el3[0]
+                masterdict[el+"_"+str(y)] = x
 print(masterdict)
-
-# valuestest = {}
-# for testvalue in list_dicts:
-#     if
-
 
