@@ -1,18 +1,9 @@
 from datetime import datetime
 from datetime import date
-import tkinter as tk
 
-#from datetime import time
-# from datetime import strftime
+
 now = datetime.now()
 dt_string = now.strftime("%d/%m/%Y %H:%M")
-
-# def countdaysleft():
-#     expiredate = (date(2023, 3, 29) - date.today()).days
-#     return expiredate
-
-
-# print(str(countdaysleft())+" days left")
 
 
 class Newsblock:
@@ -31,10 +22,6 @@ class Newsblock:
         f.close()
 
 
-# p1 = Newsblock("This is news about cats", "Kyiv")
-# p1.publish_smth()
-# print(p1)
-
 class Ad:
     def __init__(self, intro, adtext, ending, year, month, day):
         self.intro = intro
@@ -50,15 +37,13 @@ class Ad:
 
     def __str__(self):
         return f"{self.intro}\n{self.adtext}\n{self.countdaysleft()}\n{self.ending}"
+
     def publish_smth(self):
         f = open("Newsfeed.txt", "w+")
         f.write(f"{self.intro}\n{self.adtext}\nActual until: {self.day}/{self.month}/{self.year}, {self.countdaysleft()} days left \n{self.ending}")
         f.close()
 
 
-# q = Ad("Ad ---------------------------","This is ad about real estate", "------------------------------")
-# q.publish_smth()
-# print(q)
 class Weather:
     def __init__(self, weather1, weather2, weather3):
         self.intro = "\nWeather forecast-------------"
@@ -69,6 +54,7 @@ class Weather:
 
     def __str__(self):
         return f"{self.intro}\n{self.weather1}\n{self.weather2}{self.weather3}\n{self.ending}"
+
     def publish_smth(self):
         f = open("Newsfeed.txt", "w+")
         f.write(f"{self.intro}\n{self.weather1}\n{self.weather2}\n{self.weather3}\n{self.ending}")
@@ -89,9 +75,7 @@ while True:
         city1=input("Print city here =")
         p1 = Newsblock(news1, city1)
         p1.publish_smth()
-        # choicenews=tk.Tk()
-        # e = tk.Entry(choicenews)
-        # choicenews.mainloop()
+
 
     elif (choice==2):
         print("Write an ad in console:")
