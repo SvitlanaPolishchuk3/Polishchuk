@@ -68,6 +68,7 @@ while True:
     print("Press 1 for News")
     print("Press 2 for Ad")
     print("Press 3 for Weather forecast")
+    print("Press 9 to exit program")
     choice=eval(input("Choose what to publish ="))
     if (choice==1):
         print("Write news in console")
@@ -100,12 +101,3 @@ while True:
     else:
         print("invalid user input")
         continue
-
-
-
-
-
-
-
-
-

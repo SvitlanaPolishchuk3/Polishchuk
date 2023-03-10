@@ -1,6 +1,8 @@
 
 Weather forecast-------------
-kkk
-llll
-llll
+Weather in Ukraine is warm and windy.
+
+Temperature will be around 12 degrees.
+
+Weather in Europe is soft and warm.
 ------------------------------
