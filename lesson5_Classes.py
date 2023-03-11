@@ -17,7 +17,7 @@ class Newsblock:
     def __str__(self):
         return f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}"
     def publish_smth(self):
-        f = open("Newsfeed.txt", "w+")
+        f = open("Newsfeed.txt", "a")
         f.write(f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}")
         f.close()
 
@@ -39,7 +39,7 @@ class Ad:
         return f"{self.intro}\n{self.adtext}\n{self.countdaysleft()}\n{self.ending}"
 
     def publish_smth(self):
-        f = open("Newsfeed.txt", "w+")
+        f = open("Newsfeed.txt", "a")
         f.write(f"{self.intro}\n{self.adtext}\nActual until: {self.day}/{self.month}/{self.year}, {self.countdaysleft()} days left \n{self.ending}")
         f.close()
 
@@ -56,14 +56,15 @@ class Weather:
         return f"{self.intro}\n{self.weather1}\n{self.weather2}{self.weather3}\n{self.ending}"
 
     def publish_smth(self):
-        f = open("Newsfeed.txt", "w+")
+        f = open("Newsfeed.txt", "a")
         f.write(f"{self.intro}\n{self.weather1}\n{self.weather2}\n{self.weather3}\n{self.ending}")
         f.close()
 
+with open('Newsfeed.txt', 'w') as file:
+    pass
+    # file.write("News feed:\n")
 
 while True:
-    # with open('Newsfeed.txt', 'w') as file:
-    #     file.write("News feed:\n")
     print("Main menu")
     print("Press 1 for News")
     print("Press 2 for Ad")
