@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import date
 import os
+import csv
 
 
 now = datetime.now()
@@ -20,20 +21,27 @@ class Newsblock:
     def publish_smth(self):
         f = open("Newsfeed.txt", "a")
         f.write(f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}")
-        def func_capitalize_sentences():
-            sentences = f.split('.')
-            final_senteces = []
-            for sentence in sentences:
-                sentence = sentence.strip()
-                if not sentence:
-                    continue
-                sentence = sentence.capitalize()
-                final_senteces.append(sentence)
-            final_text = '. '.join(final_senteces)
-            final_text1 = final_text + '.'
-            return final_text1
         f.close()
 
+    def count_w(self):
+        file = open("Newsfeed.txt", "rt")
+        text = file.read()
+
+        text = text.lower()
+        words = text.split()
+
+        unique_words = []
+        for word in words:
+            if word not in unique_words:
+                unique_words.append(word)
+            # words_count = len(words)
+        return len(unique_words)
+
+    def populate_csv1(self):
+        with open('csv_words.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile, delimiter='-')
+            writer.writerow(['news', self.count_w()])
+            # writer.writerow(['at', '2'])
 
 class Ad:
     def __init__(self, intro, adtext, ending, year, month, day):
@@ -212,6 +220,14 @@ class Dir2:
         return self.weather3
 
 
+# create csv by writer
+
+# class Csv_file():
+
+
+
+
+
 with open('Newsfeed.txt', 'w') as file:
     pass
 
@@ -232,6 +248,7 @@ while True:
         city1=input("Print city here =")
         p1 = Newsblock(news1, city1)
         p1.publish_smth()
+        p1.populate_csv1()
 
 
     elif (choice==2):
