@@ -7,6 +7,26 @@ now = datetime.now()
 dt_string = now.strftime("%d/%m/%Y %H:%M")
 
 
+# def func_capitalize_sentences(var_to_capit):
+#     var_to_capit = var_to_capit.capitalize()
+#     var_to_capit.capitalize()
+#     f = var_to_capit.split('.')
+#     print(f)
+#     final_senteces = []
+#     for sentence in f:
+#         sentence = sentence.strip("\n")
+#         print(sentence)
+#         if not sentence:
+#             continue
+#         # sentence = sentence.capitalize()
+#         for i in range(len(sentence)):
+#             sentence[i].capitalize()
+#         # sentence = "\n".join(sentence)
+#         final_senteces.append(sentence)
+#     final_text = '. '.join(final_senteces)
+#     final_text1 = final_text + '.'
+#     return final_text1
+
 class Newsblock:
     def __init__(self, news1, city):
         self.intro = "\nNews -------------------------"
@@ -19,20 +39,12 @@ class Newsblock:
         return f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}"
     def publish_smth(self):
         f = open("Newsfeed.txt", "a")
+        # f.write(func_capitalize_sentences(f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}"))
         f.write(f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}")
-        def func_capitalize_sentences():
-            sentences = f.split('.')
-            final_senteces = []
-            for sentence in sentences:
-                sentence = sentence.strip()
-                if not sentence:
-                    continue
-                sentence = sentence.capitalize()
-                final_senteces.append(sentence)
-            final_text = '. '.join(final_senteces)
-            final_text1 = final_text + '.'
-            return final_text1
         f.close()
+
+
+
 
 
 class Ad:
@@ -83,6 +95,9 @@ class Dir:
         self.month = ""
         self.day = ""
         self.path1 = ""
+        self.weather1 = ""
+        self.weather2 = ""
+        self.weather3 = ""
         directory = os.path.join(path1)
         for subdir, dirs, files in os.walk(directory):
             for file in files:
@@ -92,14 +107,14 @@ class Dir:
                     self.news = a
                     b = f.readline()
                     self.city = b
-                    # b = linecache.getline("Newsfeed_import.txt", 1)
                     print(a)
                     f.close()
+                    self.publish_news()
                     path_to_file = os.path.join(path1+"\\"+str(file))
                     os.remove(path_to_file)
 
 
-        # path1 = ""
+        #path1 = ""
         directory = os.path.join(path1)
         for subdir, dirs, files in os.walk(directory):
             for file in files:
@@ -115,6 +130,25 @@ class Dir:
                     self.day = d
                     print(a)
                     f.close()
+                    self.publish_ad()
+                    path_to_file = os.path.join(path1 + "\\" + str(file))
+                    os.remove(path_to_file)
+
+
+        directory = os.path.join(path1)
+        for subdir, dirs, files in os.walk(directory):
+            for file in files:
+                if file.endswith("weather.txt"):
+                    f = open(os.path.join(subdir, file), 'r')
+                    a = f.readline()
+                    self.weather1 = a
+                    b = f.readline()
+                    self.weather2 = b
+                    c = f.readline()
+                    self.weather3 = c
+                    print(a)
+                    f.close()
+                    self.publish_weather()
                     path_to_file = os.path.join(path1 + "\\" + str(file))
                     os.remove(path_to_file)
 
@@ -136,70 +170,18 @@ class Dir:
     def getday(self):
         return int(self.day)
 
-    #def __init__(self):
+    def publish_news(self):
+        p1 = Newsblock(self.getnews(), self.getcity())
+        p1.publish_smth()
 
-        #path1 = "C:\\Users\\Svitlana_Polishchuk\\Documents\\Docs\\Pyth_files"
-        # directory = os.path.join(path1)
-        # for subdir, dirs, files in os.walk(directory):
+    def publish_ad(self):
+        p2 = Ad("\n\nPrivate Ad ------------------", self.getad(), "------------------------------", self.getyear(), self.getmonth(), self.getday())
+        p2.publish_smth()
 
-# class Dir1:
-#     def __init__(self):
-#         self.ad = ""
-#         self.year = ""
-#         self.month = ""
-#         self.day = ""
-#         path1 = "C:\\Users\\Svitlana_Polishchuk\\Documents\\Docs\\Pyth_files"
-#         directory = os.path.join(path1)
-#         for subdir, dirs, files in os.walk(directory):
-#             for file in files:
-#                 if file.endswith("ad.txt"):
-#                     f = open(os.path.join(subdir, file), 'r')
-#                     a = f.readline()
-#                     self.ad = a
-#                     b = f.readline()
-#                     self.year = b
-#                     c = f.readline()
-#                     self.month = c
-#                     d = f.readline()
-#                     self.day = d
-#                     print(a)
-#                     f.close()
-#                     path_to_file = os.path.join(path1 + "\\" + str(file))
-#                     os.remove(path_to_file)
-#
-#     def getad(self):
-#         return self.ad
-#
-#     def getyear(self):
-#         return int(self.year)
-#
-#     def getmonth(self):
-#         return int(self.month)
-#
-#     def getday(self):
-#         return int(self.day)
 
-class Dir2:
-    def __init__(self):
-        self.weather1 = ""
-        self.weather2 = ""
-        self.weather3 = ""
-        path1 = ""
-        directory = os.path.join(path1)
-        for subdir, dirs, files in os.walk(directory):
-            for file in files:
-                if file.endswith("weather.txt"):
-                    f = open(os.path.join(subdir, file), 'r')
-                    a = f.readline()
-                    self.weather1 = a
-                    b = f.readline()
-                    self.weather2 = b
-                    c = f.readline()
-                    self.weather3 = c
-                    print(a)
-                    f.close()
-                    path_to_file = os.path.join(path1 + "\\" + str(file))
-                    os.remove(path_to_file)
+    def publish_weather(self):
+        p1 = Weather(self.getweather1(), self.getweather2(), self.getweather3())
+        p1.publish_smth()
 
 
     def getweather1(self):
@@ -221,9 +203,9 @@ while True:
     print("Press 1 for News")
     print("Press 2 for Ad")
     print("Press 3 for Weather forecast")
-    print("Press 4 for News_import")
-    print("Press 5 for Ad_import")
-    print("Press 6 for Weather forecast_import")
+    print("Press 4 for import from files")
+    # print("Press 5 for Ad_import")
+    # print("Press 6 for Weather forecast_import")
     print("Press 9 to exit program")
     choice=eval(input("Choose what to publish ="))
     if (choice==1):
@@ -255,22 +237,21 @@ while True:
     elif (choice==4):
         path1 = input("Print path to the file =")
         d = Dir()
-        p1 = Newsblock(d.getnews(), d.getcity())
-        p1.publish_smth()
+        # d.publish_news()
 
 
-    elif (choice==5):
-        p = Dir()
-        p1 = Ad("\n\nPrivate Ad ------------------", p.getad(), "------------------------------", p.getyear(), p.getmonth(), p.getday())
-        p1.publish_smth()
+    # elif (choice==5):
+    #     path1 = input("Print path to the file =")
+    #     p = Dir()
 
-    elif (choice==6):
-        e = Dir2()
-        p1 = Weather(e.getweather1(), e.getweather2(), e.getweather3())
-        p1.publish_smth()
+
+    # elif (choice==6):
+    #     e = Dir()
+
 
     elif (choice==9):
         break
     else:
         print("invalid user input")
         continue
+
