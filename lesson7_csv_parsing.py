@@ -2,10 +2,50 @@ from datetime import datetime
 from datetime import date
 import os
 import csv
+import re
 
 
 now = datetime.now()
 dt_string = now.strftime("%d/%m/%Y %H:%M")
+
+
+def count_w():
+    file = open("Newsfeed.txt", "rt")
+    text = file.read()
+
+    text = text.lower()
+    words = re.findall(r'\b\w+\b', text)
+    print(words)
+    unique_words = set(words)
+
+    with open('csv_words.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter='-')
+        for i in unique_words:
+            if str(i).isdigit():
+                continue
+
+            writer.writerow([i, words.count(i)])
+
+def count_l():
+    file = open("Newsfeed.txt", "rt")
+    text = file.read()
+    letters = []
+    for i in text:
+        if str(i).isalpha():
+            letters.append(i)
+
+    letters_low = []
+    for i in letters:
+        letters_low.append(i.lower())
+    unique_letters = set(letters_low)
+
+
+    with open('csv_letters.csv', 'w', newline='') as csvfile:
+        headers = ['letter', 'count_all', 'count_uppercase', 'percentage']
+        writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=',')
+        writer.writeheader()
+        for i in unique_letters:
+            writer.writerow({'letter':i, 'count_all':letters_low.count(i), 'count_uppercase':letters.count(i.upper()), 'percentage':round((letters_low.count(i)/len(letters_low)*100),2)})
 
 
 class Newsblock:
@@ -20,28 +60,10 @@ class Newsblock:
         return f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}"
     def publish_smth(self):
         f = open("Newsfeed.txt", "a")
+        # f.write(func_capitalize_sentences(f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}"))
         f.write(f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}")
         f.close()
 
-    def count_w(self):
-        file = open("Newsfeed.txt", "rt")
-        text = file.read()
-
-        text = text.lower()
-        words = text.split()
-
-        unique_words = []
-        for word in words:
-            if word not in unique_words:
-                unique_words.append(word)
-            # words_count = len(words)
-        return len(unique_words)
-
-    def populate_csv1(self):
-        with open('csv_words.csv', 'w', newline='') as csvfile:
-            writer = csv.writer(csvfile, delimiter='-')
-            writer.writerow(['news', self.count_w()])
-            # writer.writerow(['at', '2'])
 
 class Ad:
     def __init__(self, intro, adtext, ending, year, month, day):
@@ -91,6 +113,9 @@ class Dir:
         self.month = ""
         self.day = ""
         self.path1 = ""
+        self.weather1 = ""
+        self.weather2 = ""
+        self.weather3 = ""
         directory = os.path.join(path1)
         for subdir, dirs, files in os.walk(directory):
             for file in files:
@@ -100,14 +125,14 @@ class Dir:
                     self.news = a
                     b = f.readline()
                     self.city = b
-                    # b = linecache.getline("Newsfeed_import.txt", 1)
                     print(a)
                     f.close()
+                    self.publish_news()
                     path_to_file = os.path.join(path1+"\\"+str(file))
                     os.remove(path_to_file)
 
 
-        # path1 = ""
+        #path1 = ""
         directory = os.path.join(path1)
         for subdir, dirs, files in os.walk(directory):
             for file in files:
@@ -123,6 +148,25 @@ class Dir:
                     self.day = d
                     print(a)
                     f.close()
+                    self.publish_ad()
+                    path_to_file = os.path.join(path1 + "\\" + str(file))
+                    os.remove(path_to_file)
+
+
+        directory = os.path.join(path1)
+        for subdir, dirs, files in os.walk(directory):
+            for file in files:
+                if file.endswith("weather.txt"):
+                    f = open(os.path.join(subdir, file), 'r')
+                    a = f.readline()
+                    self.weather1 = a
+                    b = f.readline()
+                    self.weather2 = b
+                    c = f.readline()
+                    self.weather3 = c
+                    print(a)
+                    f.close()
+                    self.publish_weather()
                     path_to_file = os.path.join(path1 + "\\" + str(file))
                     os.remove(path_to_file)
 
@@ -144,70 +188,18 @@ class Dir:
     def getday(self):
         return int(self.day)
 
-    #def __init__(self):
+    def publish_news(self):
+        p1 = Newsblock(self.getnews(), self.getcity())
+        p1.publish_smth()
 
-        #path1 = "C:\\Users\\Svitlana_Polishchuk\\Documents\\Docs\\Pyth_files"
-        # directory = os.path.join(path1)
-        # for subdir, dirs, files in os.walk(directory):
+    def publish_ad(self):
+        p2 = Ad("\n\nPrivate Ad ------------------", self.getad(), "------------------------------", self.getyear(), self.getmonth(), self.getday())
+        p2.publish_smth()
 
-# class Dir1:
-#     def __init__(self):
-#         self.ad = ""
-#         self.year = ""
-#         self.month = ""
-#         self.day = ""
-#         path1 = "C:\\Users\\Svitlana_Polishchuk\\Documents\\Docs\\Pyth_files"
-#         directory = os.path.join(path1)
-#         for subdir, dirs, files in os.walk(directory):
-#             for file in files:
-#                 if file.endswith("ad.txt"):
-#                     f = open(os.path.join(subdir, file), 'r')
-#                     a = f.readline()
-#                     self.ad = a
-#                     b = f.readline()
-#                     self.year = b
-#                     c = f.readline()
-#                     self.month = c
-#                     d = f.readline()
-#                     self.day = d
-#                     print(a)
-#                     f.close()
-#                     path_to_file = os.path.join(path1 + "\\" + str(file))
-#                     os.remove(path_to_file)
-#
-#     def getad(self):
-#         return self.ad
-#
-#     def getyear(self):
-#         return int(self.year)
-#
-#     def getmonth(self):
-#         return int(self.month)
-#
-#     def getday(self):
-#         return int(self.day)
 
-class Dir2:
-    def __init__(self):
-        self.weather1 = ""
-        self.weather2 = ""
-        self.weather3 = ""
-        path1 = ""
-        directory = os.path.join(path1)
-        for subdir, dirs, files in os.walk(directory):
-            for file in files:
-                if file.endswith("weather.txt"):
-                    f = open(os.path.join(subdir, file), 'r')
-                    a = f.readline()
-                    self.weather1 = a
-                    b = f.readline()
-                    self.weather2 = b
-                    c = f.readline()
-                    self.weather3 = c
-                    print(a)
-                    f.close()
-                    path_to_file = os.path.join(path1 + "\\" + str(file))
-                    os.remove(path_to_file)
+    def publish_weather(self):
+        p1 = Weather(self.getweather1(), self.getweather2(), self.getweather3())
+        p1.publish_smth()
 
 
     def getweather1(self):
@@ -220,14 +212,6 @@ class Dir2:
         return self.weather3
 
 
-# create csv by writer
-
-# class Csv_file():
-
-
-
-
-
 with open('Newsfeed.txt', 'w') as file:
     pass
 
@@ -238,8 +222,6 @@ while True:
     print("Press 2 for Ad")
     print("Press 3 for Weather forecast")
     print("Press 4 for News_import")
-    print("Press 5 for Ad_import")
-    print("Press 6 for Weather forecast_import")
     print("Press 9 to exit program")
     choice=eval(input("Choose what to publish ="))
     if (choice==1):
@@ -248,7 +230,6 @@ while True:
         city1=input("Print city here =")
         p1 = Newsblock(news1, city1)
         p1.publish_smth()
-        p1.populate_csv1()
 
 
     elif (choice==2):
@@ -276,18 +257,10 @@ while True:
         p1.publish_smth()
 
 
-    elif (choice==5):
-        p = Dir()
-        p1 = Ad("\n\nPrivate Ad ------------------", p.getad(), "------------------------------", p.getyear(), p.getmonth(), p.getday())
-        p1.publish_smth()
-
-    elif (choice==6):
-        e = Dir2()
-        p1 = Weather(e.getweather1(), e.getweather2(), e.getweather3())
-        p1.publish_smth()
-
     elif (choice==9):
         break
     else:
         print("invalid user input")
         continue
+    count_w()
+    count_l()

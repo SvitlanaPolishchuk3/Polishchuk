@@ -7,26 +7,6 @@ now = datetime.now()
 dt_string = now.strftime("%d/%m/%Y %H:%M")
 
 
-# def func_capitalize_sentences(var_to_capit):
-#     var_to_capit = var_to_capit.capitalize()
-#     var_to_capit.capitalize()
-#     f = var_to_capit.split('.')
-#     print(f)
-#     final_senteces = []
-#     for sentence in f:
-#         sentence = sentence.strip("\n")
-#         print(sentence)
-#         if not sentence:
-#             continue
-#         # sentence = sentence.capitalize()
-#         for i in range(len(sentence)):
-#             sentence[i].capitalize()
-#         # sentence = "\n".join(sentence)
-#         final_senteces.append(sentence)
-#     final_text = '. '.join(final_senteces)
-#     final_text1 = final_text + '.'
-#     return final_text1
-
 class Newsblock:
     def __init__(self, news1, city):
         self.intro = "\nNews -------------------------"
@@ -42,9 +22,6 @@ class Newsblock:
         # f.write(func_capitalize_sentences(f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}"))
         f.write(f"{self.intro}\n{self.news1}\n{self.city}, {self.time1}\n{self.ending}")
         f.close()
-
-
-
 
 
 class Ad:
@@ -238,15 +215,6 @@ while True:
         path1 = input("Print path to the file =")
         d = Dir()
         # d.publish_news()
-
-
-    # elif (choice==5):
-    #     path1 = input("Print path to the file =")
-    #     p = Dir()
-
-
-    # elif (choice==6):
-    #     e = Dir()
 
 
     elif (choice==9):
