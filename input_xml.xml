@@ -1,0 +1,20 @@
+<OBJECTS>
+<INPUT>
+<TYPE>Ad</TYPE>
+<EXPIREYEAR>2023</EXPIREYEAR>
+<EXPIREMONTH>07</EXPIREMONTH>
+<EXPIREDATE>07</EXPIREDATE>
+<TEXT>Buy the best car for yourself</TEXT>
+</INPUT>
+<INPUT>
+<TYPE>News</TYPE>
+<CITY>Lviv</CITY>
+<TEXT>Buy the best car for yourself</TEXT>
+</INPUT>
+<INPUT>
+<TYPE>Weather</TYPE>
+<TEXT1>Weather in Ukraine is warm and windy.</TEXT1>
+<TEXT2>Temperature will be around 12 degrees.</TEXT2>
+<TEXT3>Weather in Europe is soft and warm.</TEXT3>
+</INPUT>
+</OBJECTS>

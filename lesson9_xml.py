@@ -227,10 +227,6 @@ class JSONProcessor:
         try:
             with open(self.filepath) as f:
                 data = json.load(f)
-                # Do something with the data here, for example:
-                # for record in data:
-                #     print(record)
-
         except FileNotFoundError:
             print("File not found.")
         except json.JSONDecodeError:
@@ -248,9 +244,33 @@ class JSONProcessor:
         os.remove(self.filepath)
         print("File successfully processed and removed.")
 
-# processor = JSONProcessor('C:/Users/Svitlana_Polishchuk/Documents/Docs/Pyth_files/input_file.json')
-# processor.process()
 
+import os
+import xml.etree.ElementTree as ET
+
+class XMLRecordProvider:
+    def __init__(self, filepath=''):
+        self.filepath = filepath
+
+    def setpath(self, filepath):
+        self.filepath = filepath
+
+
+    def process(self):
+        tree = ET.parse(self.filepath)
+        root = tree.getroot()
+        for i in root:
+            if i.find("TYPE").text == "News":
+                element = Newsblock(i.find("TEXT").text, i.find("CITY").text)
+                element.publish_smth()
+            elif i.find("TYPE").text == "Ad":
+                element = Ad(i.find("TEXT").text, int(i.find("EXPIREYEAR").text), int(i.find("EXPIREMONTH").text), int(i.find("EXPIREDATE").text))
+                element.publish_smth()
+            elif i.find("TYPE").text == "Weather":
+                element = Weather(i.find("TEXT1").text, i.find("TEXT2").text, i.find("TEXT3").text)
+                element.publish_smth()
+        os.remove(self.filepath)
+        print("File successfully processed and removed.")
 
 with open('Newsfeed.txt', 'w') as file:
     pass
@@ -263,6 +283,7 @@ while True:
     print("Press 3 for Weather forecast")
     print("Press 4 for News_import")
     print("Press 5 for JSON_input")
+    print("Press 6 for xml_input")
     print("Press 9 to exit program")
     choice=eval(input("Choose what to publish ="))
     if (choice==1):
@@ -304,6 +325,13 @@ while True:
         d.process()
         # p1 = Newsblock(d.getnews(), d.getcity())
         # p1.publish_smth()
+
+    elif (choice==6):
+        path1 = input("Print path to the file =")
+        d = XMLRecordProvider()
+        d.setpath(path1)
+        d.process()
+
 
     elif (choice==9):
         break
