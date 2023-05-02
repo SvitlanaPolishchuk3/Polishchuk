@@ -1,0 +1,22 @@
+{"objects": [
+{
+  "type": "ad",
+  "expire_year": "2024",
+  "expire_month": "07",
+  "expire_date": "07",
+  "text": "Buy the the house of your dream"
+},
+
+{
+  "type": "news",
+  "city": "Kyiv",
+  "text": "European carmakers look to Indonesia as alternative to China"
+},
+
+{
+  "type": "weather",
+  "text1": "The air quality is generally acceptable for most individuals",
+  "text2": "Temperature will be around 15 degrees",
+  "text3": "No precipitation for at least 120 min"
+}]
+}

@@ -68,8 +68,6 @@ class Newsblock:
         f.close()
 
 
-
-
 class Ad:
     def __init__(self,  adtext, year, month, day):
         self.intro = "\nAd-------------"
@@ -88,6 +86,9 @@ class Ad:
 
     def publish_smth(self):
         f = open("Newsfeed.txt", "a")
+        m = NewsfeedImporter()
+        m.import_ad(text=self.adtext, actual_day=self.day, actual_month=self.month, actual_year=self.year)
+
         f.write(f"{self.intro}\n{self.adtext}\nActual until: {self.day}/{self.month}/{self.year}, {self.countdaysleft()} days left \n{self.ending}")
         f.close()
 
@@ -105,6 +106,9 @@ class Weather:
 
     def publish_smth(self):
         f = open("Newsfeed.txt", "a")
+        m = NewsfeedImporter()
+        m.import_weather(text_one=self.weather1, text_two=self.weather2, text_three=self.weather3)
+
         f.write(f"{self.intro}\n{self.weather1}\n{self.weather2}\n{self.weather3}\n{self.ending}")
         f.close()
 
@@ -282,22 +286,45 @@ import sqlite3
 class NewsfeedImporter:
     def __init__(self):
         # self.db_file = 'db_newsfeed.db'
-        self.conn = pyodbc.connect(f"Driver=Devart ODBC Driver for SQLite;Database=db_newsfeed.db;")
+        self.conn = pyodbc.connect(f"Driver=SQLite3 ODBC Driver;Database=db_newsfeed.db;")
         self.cursor = self.conn.cursor()
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS News (title TEXT, city TEXT)")
-        # self.cursor.execute("CREATE TABLE IF NOT EXISTS Ads (id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT)")
-        # self.cursor.execute("CREATE TABLE IF NOT EXISTS Weather (id INTEGER PRIMARY KEY AUTOINCREMENT, location TEXT, temperature REAL)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS news (title TEXT, city TEXT)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS ads (text TEXT, actual_day TEXT, actual_month TEXT, actual_year TEXT)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS weather (text_one TEXT, text_two TEXT, text_three TEXT)")
 
     def import_news(self, title, city):
-        query = f"INSERT INTO News (title, city) VALUES ({title}, {city})"
-        self.cursor.execute(query)
+        self.cursor.execute(f"SELECT title, city FROM news WHERE title = '{title}' and city= '{city}'")
+        duplicate = self.cursor.fetchall()
+        if len(duplicate)==0:
+            self.cursor.execute(f"INSERT INTO news (title, city) VALUES ('{title}', '{city}')")
+            print('added to db')
+        else:
+            print('value not added')
+
+
+    def import_ad(self, text, actual_day, actual_month, actual_year):
+        self.cursor.execute(f"SELECT text, actual_day, actual_month, actual_year FROM ads WHERE text = '{text}' and actual_day= '{actual_day}' and actual_month= '{actual_month}' and actual_year= '{actual_year}'")
+        duplicate = self.cursor.fetchall()
+        if len(duplicate)==0:
+            self.cursor.execute(f"INSERT INTO ads (text, actual_day, actual_month, actual_year) VALUES ('{text}', '{actual_day}', {actual_month}, {actual_year})")
+            print('added to db')
+        else:
+            print('value not added')
+
+    def import_weather(self, text_one, text_two, text_three):
+        self.cursor.execute(f"SELECT text_one, text_two, text_three FROM weather WHERE text_one = '{text_one}' and text_two= '{text_two}' and text_three= '{text_three}'")
+        duplicate = self.cursor.fetchall()
+        if len(duplicate)==0:
+            self.cursor.execute(f"INSERT INTO weather (text_one, text_two, text_three) VALUES ('{text_one}', '{text_two}', '{text_three}')")
+            print('added to db')
+        else:
+            print('value not added')
+
+
+    def __del__(self):
         self.cursor.commit()
         self.cursor.close()
         self.conn.close()
-
-
-    # def __del__(self):
-
 
 
 with open('Newsfeed.txt', 'w') as file:
